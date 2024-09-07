@@ -18,7 +18,7 @@ def create_app(test_config=None):
         # load the test config if passed in
         app.config.from_mapping(test_config)
 
-    # ensure the instance folder exists
+    # asegurarse de que la carpeta instance existe
     try:
         os.makedirs(app.instance_path)
     except OSError:
@@ -29,7 +29,12 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
     
+    # importa y llama a la base de datos
     from . import db
     db.init_app(app)
+
+    # importa y registra el blueprint 'auth'
+    from . import auth
+    app.register_blueprint(auth.bp)
 
     return app
